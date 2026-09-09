@@ -1,8 +1,8 @@
 ---
 title: "Contribute"
 date: "2026-06-10"
-last_modified_at: "2026-07-07"
-excerpt: "Support OLI through tax-deductible donations, introductions, legal research, writing, media, and scholar or lawyer collaboration."
+last_modified_at: "2026-09-08"
+excerpt: "Support OLI through tax-deductible donations, workplace giving, employer matching, introductions, legal research, writing, media, and professional collaboration."
 classes: wide
 header:
   kicker: "Support OLI"
@@ -29,6 +29,10 @@ header:
     <section class="oli-card">
       <h3>Donations</h3>
       <p>Financial support funds research, writing, publication, operations, and future legal advocacy capacity. OLI is recognized by the IRS as a 501(c)(3) public charity, and contributions are tax-deductible to the extent allowed by law.</p>
+    </section>
+    <section class="oli-card">
+      <h3>Workplace Giving and Employer Matching</h3>
+      <p>If your employer uses <a href="https://benevity.com/products/donate" target="_blank" rel="noopener noreferrer">Benevity</a>, search for <strong>The Objective Law Initiative</strong> or EIN <strong>41-5268364</strong> in your workplace giving portal. Depending on your employer's program, you may be able to donate through payroll, request an employer match, or use other workplace-giving benefits.</p>
     </section>
     <section class="oli-card">
       <h3>Donor Introductions</h3>
