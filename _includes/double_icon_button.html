@@ -8,7 +8,10 @@ Parameters:
 - right_icon: optional Font Awesome classes for a trailing segmented icon
 - left_tint: optional boolean-like value, defaults to true when left_icon is present
 - right_tint: optional boolean-like value, defaults to true when right_icon is present
-- newtab: optional boolean-like value, defaults to false
+- newtab: optional boolean-like value, defaults to false; enables open_newtab behavior.
+- target: optional HTML target (e.g. `_top`, `_blank`, `_self`, `_parent`).
+  A non-empty explicit target overrides open_newtab; otherwise newtab=true uses `_blank`.
+  An effective `_blank` retains rel="noopener" and data-no-external-icon="true".
 - width: optional CSS width value, used when stack=true
 - stack: optional boolean-like value; when true, renders as a stacked-width button
 - alignment: optional label alignment. Accepts `left`, `center`, or `right`. Defaults to `left`.
@@ -39,6 +42,11 @@ Behavior:
 {%- assign open_newtab = false -%}
 {%- if normalized_newtab == "true" or raw_newtab == true -%}
   {%- assign open_newtab = true -%}
+{%- endif -%}
+
+{%- assign effective_target = include.target | default: "" | strip -%}
+{%- if effective_target == "" and open_newtab -%}
+  {%- assign effective_target = "_blank" -%}
 {%- endif -%}
 
 {%- assign is_stack = false -%}
@@ -99,5 +107,5 @@ Behavior:
 {%- endif -%}
 
 {%- if href != "" and label != "" -%}
-<div class="{{ wrapper_class_name | strip }}" markdown="0"{% if style_attr | strip != "" %} style="{{ style_attr | strip }}"{% endif %}><a href="{{ href }}" class="{{ class_name | strip }}"{% if open_newtab %} target="_blank" rel="noopener" data-no-external-icon="true"{% endif %}>{%- if left_icon != "" -%}<span class="double-icon-button__lead" aria-hidden="true"><i class="{{ left_icon }}"></i></span>{%- endif -%}<span class="double-icon-button__label"><span>{{ label }}</span></span>{%- if right_icon != "" -%}<span class="double-icon-button__aside" aria-hidden="true"><i class="{{ right_icon }}"></i></span>{%- endif -%}</a></div>
+<div class="{{ wrapper_class_name | strip }}" markdown="0"{% if style_attr | strip != "" %} style="{{ style_attr | strip }}"{% endif %}><a href="{{ href }}" class="{{ class_name | strip }}"{% if effective_target != "" %} target="{{ effective_target | escape }}"{% endif %}{% if effective_target == "_blank" %} rel="noopener" data-no-external-icon="true"{% endif %}>{%- if left_icon != "" -%}<span class="double-icon-button__lead" aria-hidden="true"><i class="{{ left_icon }}"></i></span>{%- endif -%}<span class="double-icon-button__label"><span>{{ label }}</span></span>{%- if right_icon != "" -%}<span class="double-icon-button__aside" aria-hidden="true"><i class="{{ right_icon }}"></i></span>{%- endif -%}</a></div>
 {%- endif -%}

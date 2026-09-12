@@ -1,0 +1,23 @@
+---
+layout: null
+---
+{% assign locale = page.locale | default: site.locale %}
+<!doctype html>
+<html lang="{{ locale | replace: '_', '-' | default: 'en' }}" class="no-js oli-thank-you-document">
+  <head>
+    {% include head.html locale=locale %}
+    {% include head/custom.html %}
+  </head>
+  <body class="oli-thank-you" dir="{% if site.rtl %}rtl{% else %}ltr{% endif %}">
+    <main class="oli-thank-you__content">
+      <div class="oli-thank-you__brand">
+        {% if site.logo %}<img src="{{ site.logo | relative_url }}" alt="">{% endif %}
+        <span>The Objective Law Initiative</span>
+      </div>
+      <h1 class="oli-thank-you__title">{{ page.title | escape }}</h1>
+      {{ content }}
+    </main>
+    {% include analytics.html %}
+    <script src="{{ '/assets/js/oli/donation-analytics.js' | relative_url }}"></script>
+  </body>
+</html>

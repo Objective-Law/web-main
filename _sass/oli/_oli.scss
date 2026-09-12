@@ -495,7 +495,9 @@ a.oli-button:visited {
 .oli-button--secondary:visited,
 .btn.oli-button--secondary:visited,
 .page__content a.oli-button--secondary,
-.page__content a.oli-button--secondary:visited {
+.page__content a.oli-button--secondary:visited,
+a.oli-button--secondary,
+a.oli-button--secondary:visited {
   color: var(--oli-primary);
 }
 
@@ -652,6 +654,71 @@ a.oli-button:visited {
 
 .oli-section__lead + p {
   margin-top: 0.9rem;
+}
+
+/* Compact confirmation document, whether framed by Zeffy or opened directly. */
+html.oli-thank-you-document {
+  background: var(--oli-paper);
+  min-height: 0;
+  font-size: 16px;
+  scroll-padding-top: 0;
+}
+
+body.oli-thank-you {
+  background: var(--oli-paper);
+  display: block;
+  min-height: 0;
+}
+
+.oli-thank-you__content {
+  box-sizing: border-box;
+  max-width: 700px;
+  margin-inline: auto;
+  padding: clamp(20px, 4vw, 32px);
+}
+
+.oli-thank-you__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--oli-primary);
+  font-family: var(--oli-font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+
+  img {
+    flex: none;
+    width: auto;
+    height: 48px;
+  }
+}
+
+.oli-thank-you__title {
+  margin: 0 0 1rem;
+  color: var(--oli-primary);
+  font-family: var(--oli-font-display);
+  font-size: clamp(1.65rem, 5vw, 2.15rem);
+  letter-spacing: -0.018em;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 5rem;
+    height: 3px;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--oli-gold) 0 72%, var(--oli-red) 72% 86%, var(--oli-cyan) 86%);
+  }
+}
+
+.oli-thank-you__copy {
+  line-height: 1.6;
+  overflow-wrap: break-word;
+
+  p {
+    margin: 0 0 1rem;
+  }
 }
 
 /* Let Zeffy size the direct embed; only the script-failure iframe needs a height. */
