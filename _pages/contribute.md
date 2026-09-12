@@ -1,7 +1,7 @@
 ---
 title: "Contribute"
 date: "2026-06-10"
-last_modified_at: "2026-09-08"
+last_modified_at: "2026-09-11"
 excerpt: "Support OLI through tax-deductible donations, workplace giving, employer matching, introductions, legal research, writing, media, and professional collaboration."
 classes: wide
 header:
@@ -17,19 +17,36 @@ header:
 ## Support OLI
 
   <p class="oli-section__lead">OLI is building legal, scholarly, and educational capacity around a single purpose: clarifying and defending objective limits on government power and the individual rights those limits exist to protect.</p>
-  <p>The Objective Law Initiative is recognized by the IRS as a 501(c)(3) public charity, and contributions are tax-deductible to the extent allowed by law; while our online donation platform is being set up, prospective donors can contact us directly to coordinate contributions, including gifts by check.</p>
-  <p>Lawyers, scholars, writers, editors, designers, volunteers, and prospective collaborators can also contact us about contributing time, expertise, introductions, research, writing, media, design, or other support.</p>
+  <p><a href="#donate">Donate below</a>, explore <a href="#ways-to-contribute">other ways to contribute</a>, or contact us to coordinate gifts by check, professional collaboration, and other support.</p>
   {% include double_icon_button.html href="mailto:info@objectivelaw.org?subject=Supporting%20OLI" label="Contact OLI About Contributing" right_icon="fa-regular fa-envelope" alignment="center" container_alignment="left" %}
+</section>
+
+<section class="oli-section" markdown="1">
+## Donate
+
+  <p>Financial support funds research, writing, publication, operations, and future legal advocacy capacity. OLI is recognized by the IRS as a 501(c)(3) public charity, and contributions are tax-deductible to the extent allowed by law.</p>
+  <div class="oli-donation-embed">
+    <div role="region" aria-label="Donation form powered by Zeffy" data-zeffy-embed data-form-url="/embed/donation-form/support-the-objective-law-initiative"></div>
+    <div class="oli-donation-embed__fallback" data-zeffy-embed-fallback>
+      <iframe
+        title="Donation form powered by Zeffy"
+        data-zeffy-embed-src="https://www.zeffy.com/embed/donation-form/support-the-objective-law-initiative"
+        allowpaymentrequest
+        allowTransparency="true">
+      </iframe>
+    </div>
+    <script
+      src="https://www.zeffy.com/embed/v2/zeffy-embed.js"
+      onerror="document.querySelectorAll('[data-zeffy-embed-fallback]').forEach(function(el){el.style.display='block';el.querySelectorAll('iframe[data-zeffy-embed-src]').forEach(function(f){f.src=f.getAttribute('data-zeffy-embed-src');});});">
+    </script>
+    <noscript><p><a href="https://www.zeffy.com/embed/donation-form/support-the-objective-law-initiative">Open the donation form on Zeffy</a>.</p></noscript>
+  </div>
 </section>
 
 <section class="oli-section" markdown="1">
 ## Ways to Contribute
 
   <div class="oli-grid">
-    <section class="oli-card">
-      <h3>Donations</h3>
-      <p>Financial support funds research, writing, publication, operations, and future legal advocacy capacity. OLI is recognized by the IRS as a 501(c)(3) public charity, and contributions are tax-deductible to the extent allowed by law.</p>
-    </section>
     <section class="oli-card">
       <h3>Workplace Giving and Employer Matching</h3>
       <p>If your employer uses <a href="https://benevity.com/products/donate" target="_blank" rel="noopener noreferrer">Benevity</a>, search for <strong>The Objective Law Initiative</strong> or EIN <strong>41-5268364</strong> in your workplace giving portal. Depending on your employer's program, you may be able to donate through payroll, request an employer match, or use other workplace-giving benefits.</p>

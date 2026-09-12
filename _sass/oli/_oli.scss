@@ -256,6 +256,47 @@ textarea {
   color: var(--oli-action);
 }
 
+.greedy-nav .visible-links a.oli-nav-donate,
+.greedy-nav .hidden-links a.oli-nav-donate {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--oli-primary);
+  border-radius: 4px;
+  background: var(--oli-primary);
+  color: var(--oli-ivory);
+  font-family: var(--oli-font-ui);
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.065em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &::before {
+    content: none;
+  }
+
+  &:hover,
+  &:focus {
+    border-color: var(--oli-navy-deep);
+    background: var(--oli-navy-deep);
+    color: var(--oli-ivory);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--oli-gold);
+    outline-offset: 2px;
+  }
+}
+
+.greedy-nav .visible-links a.oli-nav-donate {
+  margin-inline: 0.5rem;
+}
+
+.greedy-nav .hidden-links a.oli-nav-donate {
+  margin: 0.35rem 0.4rem;
+}
+
 .greedy-nav__toggle,
 .search__toggle {
   color: var(--oli-primary);
@@ -613,6 +654,33 @@ a.oli-button:visited {
   margin-top: 0.9rem;
 }
 
+/* Let Zeffy size the direct embed; only the script-failure iframe needs a height. */
+.oli-donation-embed {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+
+  [data-zeffy-embed] {
+    /* Override vendor inline presentation, retaining its automatic height updates. */
+    max-width: none !important;
+    border-radius: 6px !important;
+  }
+}
+
+.oli-donation-embed__fallback {
+  display: none;
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 800px;
+    height: max(650px, 85svh);
+    border: 0;
+    border-radius: 6px;
+  }
+}
+
 .oli-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
@@ -626,6 +694,7 @@ a.oli-button:visited {
 
 .oli-card,
 .oli-panel,
+.oli-donation-embed,
 .oli-resource-card,
 .oli-status-notice,
 .oli-video-placeholder {
@@ -633,6 +702,10 @@ a.oli-button:visited {
   border-radius: 3px;
   background: var(--oli-white);
   box-shadow: 0 14px 34px rgba(7, 26, 61, 0.07);
+}
+
+.oli-donation-embed {
+  border-radius: 12px;
 }
 
 .oli-card,

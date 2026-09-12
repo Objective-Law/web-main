@@ -17,6 +17,7 @@
             <li class="masthead__menu-item">
               <a
                 href="{{ link.url | relative_url }}"
+                {% if link.zeffy_form_link %} class="oli-nav-donate" zeffy-form-link="{{ link.zeffy_form_link | escape }}"{% endif %}
                 {% if link.description %} title="{{ link.description }}"{% endif %}
                 {% if link.target %} target="{{ link.target }}"{% endif %}
               >{{ link.title }}</a>

@@ -1,4 +1,7 @@
 main:
+  - title: "Donate"
+    url: /contribute/#donate
+    zeffy_form_link: "https://www.zeffy.com/embed/donation-form/support-the-objective-law-initiative?modal=true"
   - title: "About"
     url: /about/
   - title: "Resources"

@@ -7,6 +7,17 @@
   <script src="{{ '/assets/js/main.min.js' | relative_url }}"></script>
 {% endif %}
 
+<!-- Keep anchor navigation as the fallback until Zeffy's modal script loads. -->
+<script
+  src="https://zeffy-scripts.s3.ca-central-1.amazonaws.com/embed-form-script.min.js"
+  onload="document.addEventListener('click', function(event) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.target instanceof Element && event.target.closest('[zeffy-form-link]')) {
+      event.preventDefault();
+    }
+  }, true);">
+</script>
+
 {% if site.search == true or page.layout == "search" %}
   {%- assign search_provider = site.search_provider | default: "lunr" -%}
   {%- case search_provider -%}
