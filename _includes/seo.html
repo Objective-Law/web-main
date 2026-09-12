@@ -113,7 +113,7 @@
 
 <title>{{ seo_title }}{% if paginator %}{% unless paginator.page == 1 %} {{ title_separator }} {{ site.data.ui-text[locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
 <meta name="description" content="{{ seo_description }}">
-{% if site.url == "https://temp.objectivelaw.org" %}
+{% if site.url == "https://temp.objectivelaw.org" or page.noindex == true %}
 <meta name="robots" content="noindex, follow">
 {% endif %}
 
