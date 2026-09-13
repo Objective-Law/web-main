@@ -1,0 +1,8 @@
+{%- assign raw_platform_key = include.platform | default: "" | downcase | strip -%}
+{%- if raw_platform_key == "twitter" -%}
+  x
+{%- elsif raw_platform_key == "youtube shorts" or raw_platform_key == "youtube short" -%}
+  youtube
+{%- else -%}
+  {{- raw_platform_key -}}
+{%- endif -%}

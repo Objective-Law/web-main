@@ -1,5 +1,5 @@
 {% assign item = include.item %}
-{% assign render_type = item.type | default: item.provider | downcase %}
+{% assign render_type = item.type | downcase %}
 {% if render_type == "image" and item.url %}
   <figure class="oli-visual-render__figure">
     <img class="oli-visual-render__image" src="{{ item.url | relative_url }}" alt="{{ item.alt | default: page.title | escape }}" loading="{% if include.index == 1 %}eager{% else %}lazy{% endif %}" decoding="async">
@@ -8,8 +8,9 @@
     {% endif %}
   </figure>
 {% elsif render_type == "youtube" and item.id %}
+  {% capture local_embed_url %}{% include oli/platform-url.html platform="youtube" variant="video" id=item.id mode="embed" %}{% endcapture %}
   <div class="oli-visual-render__video">
-    <iframe src="https://www.youtube.com/embed/{{ item.id }}" title="{{ item.title | default: page.title | escape }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe class="fitvidsignore" src="{{ local_embed_url | strip | escape }}" title="{{ item.title | default: page.title | escape }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   </div>
 {% else %}
   <p class="notice--info">Media placeholder. Final asset or embed ID will be added here.</p>

@@ -1,0 +1,11 @@
+{%- comment -%}
+Use after a Markdown Transcript heading, before details.oli-transcript with
+summary "Read transcript" and div.oli-transcript__body markdown="1".
+Omit the details open attribute to keep the transcript collapsed initially.
+{%- endcomment -%}
+{%- case include.status -%}
+{%- when 'machine_generated_unreviewed' -%}
+<p class="oli-transcript-notice"><strong>Transcript notice:</strong> This transcript was generated automatically using speech-recognition and speaker-diarization models and has not yet been manually reviewed. It may contain errors in wording, punctuation, names, or speaker attribution.</p>
+{%- when 'human_reviewed', 'publisher_provided' -%}
+{%- comment -%}Recognized statuses that require no warning.{%- endcomment -%}
+{%- endcase -%}

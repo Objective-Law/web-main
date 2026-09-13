@@ -1,36 +1,97 @@
-{% if page.views and page.views.size > 0 %}
-  <div class="oli-visual-media" data-oli-visual-media>
-    <div class="oli-visual-media__tabs" role="tablist" aria-label="Visual media views">
-      {% for view in page.views %}
-        {% assign tab_id = "oli-visual-tab-" | append: forloop.index %}
-        {% assign panel_id = "oli-visual-panel-" | append: forloop.index %}
-        <button
-          class="oli-visual-media__tab"
-          id="{{ tab_id }}"
-          type="button"
-          role="tab"
-          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-          aria-controls="{{ panel_id }}"
-          data-oli-visual-tab
-        >{{ view.label | default: view.platform | default: "View" }}</button>
-      {% endfor %}
-    </div>
+{%- assign visual_views = page.views -%}
+{%- assign default_group_key = "" -%}
+    {%- for view in visual_views -%}
+      {%- if view.default == true and default_group_key == "" -%}
+        {%- capture default_group_key_capture -%}{% include oli/visual-media-view-key.html view=view %}{%- endcapture -%}
+        {%- assign default_group_key = default_group_key_capture | strip -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if default_group_key == "" -%}
+      {%- for candidate_view in visual_views -%}
+        {%- capture candidate_key -%}{% include oli/visual-media-view-key.html view=candidate_view %}{%- endcapture -%}
+        {%- assign candidate_key = candidate_key | strip -%}
+        {%- if candidate_key != "" -%}
+          {%- assign default_group_key = candidate_key -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+    {%- if default_group_key != "" -%}
+    <section class="oli-visual-viewer" data-oli-visual-viewer aria-label="Visual media views">
+      <div class="oli-visual-tabs">
+        <div class="oli-visual-tabs__rail" role="tablist" aria-label="Available visual media views">
+          {%- assign rendered_tab_keys = "|" -%}
+          {%- for view in visual_views -%}
+            {%- capture view_group_key_capture -%}{% include oli/visual-media-view-key.html view=view %}{%- endcapture -%}
+            {%- assign view_group_key = view_group_key_capture | strip -%}
+            {%- assign view_group_marker = "|" | append: view_group_key | append: "|" -%}
+            {%- unless view_group_key == "" or rendered_tab_keys contains view_group_marker -%}
+              {%- assign rendered_tab_keys = rendered_tab_keys | append: view_group_key | append: "|" -%}
+              {%- assign view_meta = site.data.oli_platforms[view_group_key] -%}
+              {%- assign view_label = view_meta.label | default: view.platform | default: view_group_key | default: "View" -%}
+              {%- assign view_icon = view_meta.icon | default: "fas fa-external-link-alt" -%}
+              {%- assign panel_id = page.slug | append: "-visual-view-" | append: view_group_key -%}
+              {%- assign tab_id = panel_id | append: "-tab" -%}
+              {%- assign is_active_view = false -%}
+              {%- if view_group_key == default_group_key -%}
+                {%- assign is_active_view = true -%}
+              {%- endif -%}
+              <button
+                class="oli-visual-tab{% if is_active_view %} is-active{% endif %}"
+                id="{{ tab_id }}"
+                type="button"
+                role="tab"
+                aria-selected="{% if is_active_view %}true{% else %}false{% endif %}"
+                aria-controls="{{ panel_id }}"
+                tabindex="{% if is_active_view %}0{% else %}-1{% endif %}"
+                title="{{ view_label | escape_once }}"
+                aria-label="{{ view_label | escape_once }}"
+                data-oli-visual-tab
+                data-oli-visual-tab-key="{{ view_group_key }}"
+              >
+                <i class="{{ view_icon }}" aria-hidden="true"></i>
+                <span class="oli-visual-tab__label">{{ view_label }}</span>
+              </button>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      </div>
 
-    {% for view in page.views %}
-      {% assign tab_id = "oli-visual-tab-" | append: forloop.index %}
-      {% assign panel_id = "oli-visual-panel-" | append: forloop.index %}
-      <section
-        class="oli-visual-media__panel"
-        id="{{ panel_id }}"
-        role="tabpanel"
-        aria-labelledby="{{ tab_id }}"
-        {% unless forloop.first %}hidden{% endunless %}
-        data-oli-visual-panel
-      >
-        {% include oli/visual-media-view.html view=view %}
-      </section>
-    {% endfor %}
-  </div>
-{% else %}
-  <div class="notice--info">Visual media views will appear here when OLI publishes them.</div>
-{% endif %}
+      <div class="oli-visual-viewer__panels">
+        {%- assign rendered_panel_keys = "|" -%}
+        {%- for seed_view in visual_views -%}
+          {%- capture panel_group_key_capture -%}{% include oli/visual-media-view-key.html view=seed_view %}{%- endcapture -%}
+          {%- assign panel_group_key = panel_group_key_capture | strip -%}
+          {%- assign panel_group_marker = "|" | append: panel_group_key | append: "|" -%}
+          {%- unless panel_group_key == "" or rendered_panel_keys contains panel_group_marker -%}
+            {%- assign rendered_panel_keys = rendered_panel_keys | append: panel_group_key | append: "|" -%}
+            {%- assign panel_id = page.slug | append: "-visual-view-" | append: panel_group_key -%}
+            {%- assign tab_id = panel_id | append: "-tab" -%}
+            {%- assign is_active_panel = false -%}
+            {%- if panel_group_key == default_group_key -%}
+              {%- assign is_active_panel = true -%}
+            {%- endif -%}
+            <div
+              class="oli-visual-panel{% if is_active_panel %} is-active{% endif %}"
+              id="{{ panel_id }}"
+              role="tabpanel"
+              aria-labelledby="{{ tab_id }}"
+              aria-hidden="{% if is_active_panel %}false{% else %}true{% endif %}"
+              data-oli-visual-panel
+              data-oli-visual-panel-key="{{ panel_group_key }}"
+              {% unless is_active_panel %}hidden{% endunless %}
+            >
+              {%- for grouped_view in visual_views -%}
+                {%- capture grouped_view_key_capture -%}{% include oli/visual-media-view-key.html view=grouped_view %}{%- endcapture -%}
+                {%- assign grouped_view_key = grouped_view_key_capture | strip -%}
+                {%- if grouped_view_key == panel_group_key -%}
+                  {% include oli/visual-media-view.html view=grouped_view %}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </section>
+
+    {%- endif -%}

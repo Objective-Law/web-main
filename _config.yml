@@ -93,7 +93,7 @@ defaults:
       path: "_resources/videos"
       type: resources
     values:
-      layout: single
+      layout: visual_media
       type: video
       resource_type: video
       share: true

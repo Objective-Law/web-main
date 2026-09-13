@@ -1,0 +1,72 @@
+{%- assign entry = include.entry | default: include.view -%}
+{%- assign platform_name = include.platform | default: entry.platform -%}
+{%- capture platform_key_capture -%}{% include oli/platform-key.html platform=platform_name %}{%- endcapture -%}
+{%- assign platform_key = platform_key_capture | strip -%}
+{%- assign registry = site.data.oli_platforms[platform_key] -%}
+{%- assign mode = include.mode | default: "canonical" | downcase | strip -%}
+{%- assign explicit_url = include.url | default: entry.url -%}
+
+{%- if explicit_url and explicit_url != "" and mode == "canonical" -%}
+  {{- explicit_url -}}
+{%- elsif registry -%}
+  {%- assign variant = include.variant | default: entry.variant -%}
+  {%- if variant == nil or variant == "" -%}
+    {%- if platform_key == "youtube" -%}
+      {%- assign variant = "video" -%}
+    {%- else -%}
+      {%- assign variant = "post" -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- assign variant = variant | downcase | strip -%}
+  {%- assign variant_data = registry.variants[variant] -%}
+  {%- assign account = include.account | default: entry.account | default: "" -%}
+  {%- assign id = include.id | default: entry.id | default: "" -%}
+  {%- assign urn = include.urn | default: entry.urn | default: "" -%}
+  {%- assign template = nil -%}
+  {%- if variant_data -%}
+    {%- if mode == "embed" -%}
+      {%- assign template = variant_data.embed_url_template -%}
+    {%- else -%}
+      {%- assign template = variant_data.url_template -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if template -%}
+    {%- capture account_placeholder -%}{% raw %}{{ account }}{% endraw %}{%- endcapture -%}
+    {%- capture id_placeholder -%}{% raw %}{{ id }}{% endraw %}{%- endcapture -%}
+    {%- capture urn_placeholder -%}{% raw %}{{ urn }}{% endraw %}{%- endcapture -%}
+    {%- capture encoded_url_placeholder -%}{% raw %}{{ encoded_url }}{% endraw %}{%- endcapture -%}
+    {%- assign template_requires_account = false -%}
+    {%- assign template_requires_id = false -%}
+    {%- assign template_requires_urn = false -%}
+    {%- if template contains account_placeholder -%}{%- assign template_requires_account = true -%}{%- endif -%}
+    {%- if template contains id_placeholder -%}{%- assign template_requires_id = true -%}{%- endif -%}
+    {%- if template contains urn_placeholder -%}{%- assign template_requires_urn = true -%}{%- endif -%}
+    {%- assign can_resolve_template = true -%}
+    {%- if template_requires_account and account == "" -%}{%- assign can_resolve_template = false -%}{%- endif -%}
+    {%- if template_requires_id and id == "" -%}{%- assign can_resolve_template = false -%}{%- endif -%}
+    {%- if template_requires_urn and urn == "" -%}{%- assign can_resolve_template = false -%}{%- endif -%}
+    {%- assign encoded_url = include.encoded_url | default: "" -%}
+    {%- if encoded_url == "" -%}
+      {%- assign url_to_encode = include.url_to_encode | default: explicit_url | default: "" -%}
+      {%- if url_to_encode == "" and variant_data.url_template -%}
+        {%- assign url_to_encode = variant_data.url_template
+          | replace: account_placeholder, account
+          | replace: id_placeholder, id
+          | replace: urn_placeholder, urn
+        -%}
+      {%- endif -%}
+      {%- if url_to_encode != "" -%}
+        {%- assign encoded_url = url_to_encode | cgi_escape -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if template contains encoded_url_placeholder and encoded_url == "" -%}
+      {%- assign can_resolve_template = false -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if template and can_resolve_template -%}
+    {%- assign resolved_url = template | replace: account_placeholder, account -%}
+    {%- assign resolved_url = resolved_url | replace: id_placeholder, id -%}
+    {%- assign resolved_url = resolved_url | replace: urn_placeholder, urn -%}
+    {{- resolved_url | replace: encoded_url_placeholder, encoded_url -}}
+  {%- endif -%}
+{%- endif -%}

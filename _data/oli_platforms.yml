@@ -1,0 +1,44 @@
+local:
+  label: Local
+  icon: fas fa-image
+youtube:
+  label: YouTube
+  icon: fab fa-youtube
+  variants:
+    video:
+      url_template: "https://www.youtube.com/watch?v={{ id }}"
+      embed_url_template: "https://www.youtube.com/embed/{{ id }}"
+    short:
+      url_template: "https://www.youtube.com/shorts/{{ id }}"
+      embed_url_template: "https://www.youtube.com/embed/{{ id }}"
+facebook:
+  label: Facebook
+  icon: fab fa-facebook
+  variants:
+    post:
+      url_template: "https://www.facebook.com/{{ account }}/posts/{{ id }}"
+    reel:
+      url_template: "https://www.facebook.com/reel/{{ id }}"
+instagram:
+  label: Instagram
+  icon: fab fa-instagram
+  variants:
+    post:
+      url_template: "https://www.instagram.com/p/{{ id }}/"
+    reel:
+      url_template: "https://www.instagram.com/reel/{{ id }}/"
+    highlight:
+      url_template: "https://www.instagram.com/stories/highlights/{{ id }}/"
+x:
+  label: Twitter
+  icon: fab fa-twitter
+  variants:
+    post:
+      url_template: "https://x.com/{{ account }}/status/{{ id }}"
+linkedin:
+  label: LinkedIn
+  icon: fab fa-linkedin
+  variants:
+    post:
+      url_template: "https://www.linkedin.com/feed/update/{{ urn }}/"
+      embed_url_template: "https://www.linkedin.com/embed/feed/update/{{ urn }}"

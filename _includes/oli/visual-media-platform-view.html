@@ -1,0 +1,31 @@
+{%- assign platform_view = include.view -%}
+{%- capture platform_key -%}{% include oli/platform-key.html platform=platform_view.platform %}{%- endcapture -%}
+{%- assign platform_key = platform_key | strip -%}
+{%- assign platform_meta = site.data.oli_platforms[platform_key] -%}
+{%- assign platform_variant = platform_view.variant | default: "post" | downcase -%}
+{%- capture platform_url -%}{% include oli/platform-url.html entry=platform_view %}{%- endcapture -%}
+{%- assign platform_url = platform_url | strip -%}
+{%- capture embed_url -%}{% include oli/platform-url.html entry=platform_view mode="embed" %}{%- endcapture -%}
+{%- assign embed_url = embed_url | strip -%}
+<div class="oli-visual-platform-render oli-visual-platform-render--{{ platform_key }}">
+  {% if platform_key == "youtube" and embed_url != "" %}
+    <div class="oli-visual-render__video{% if platform_variant == 'short' %} oli-visual-render__video--portrait{% endif %}">
+      <iframe class="fitvidsignore" src="{{ embed_url | escape }}" title="{{ platform_view.title | default: page.title | escape }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  {% elsif platform_key == "linkedin" and platform_variant == "post" and embed_url != "" %}
+    <iframe class="oli-visual-embed oli-visual-embed--linkedin fitvidsignore" src="{{ embed_url | escape }}" title="{{ platform_view.title | default: page.title | escape }} on LinkedIn" height="{{ platform_view.embed_height | default: 1200 | escape }}" loading="lazy" allowfullscreen></iframe>
+  {% elsif platform_key == "facebook" and platform_variant == "post" %}
+    <div class="fb-post" data-oli-platform-embed="facebook" data-href="{{ platform_url | escape }}" data-width="500" data-show-text="true"></div>
+  {% elsif platform_key == "instagram" and platform_variant != "highlight" %}
+    <blockquote class="instagram-media" data-oli-platform-embed="instagram" data-instgrm-permalink="{{ platform_url | escape }}" data-instgrm-version="14"></blockquote>
+  {% elsif platform_key == "x" and platform_variant == "post" %}
+    <blockquote class="twitter-tweet" data-oli-platform-embed="x" data-width="550"><a href="{{ platform_url | escape }}">View on Twitter</a></blockquote>
+  {% endif %}
+  {% if platform_url != "" %}
+    {% assign action_label = "View on " | append: platform_meta.label %}
+    {% if platform_key == "youtube" %}{% assign action_label = "Watch on YouTube" %}{% endif %}
+    <div class="oli-visual-platform-render__action">
+      {% include double_icon_button.html href=platform_url label=action_label left_icon=platform_meta.icon left_tint=false right_icon="fas fa-external-link-alt" newtab=true width="18rem" stack=true alignment="center" container_alignment="center" %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,10 @@
+{%- assign media_view = include.view -%}
+{%- if media_view.type == "local" and media_view.items.size > 0 -%}
+  local
+{%- elsif media_view.type == "platform" -%}
+  {%- capture media_key -%}{% include oli/platform-key.html platform=media_view.platform %}{%- endcapture -%}
+  {%- assign media_key = media_key | strip -%}
+  {%- capture media_url -%}{% include oli/platform-url.html entry=media_view %}{%- endcapture -%}
+  {%- assign media_url = media_url | strip -%}
+  {%- if site.data.oli_platforms[media_key] and media_url != "" -%}{{- media_key -}}{%- endif -%}
+{%- endif -%}

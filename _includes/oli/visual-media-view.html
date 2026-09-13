@@ -1,33 +1,8 @@
-{% assign view = include.view %}
-{% assign view_type = view.type | default: "local" | downcase %}
-
-{% if view_type == "local" %}
-  {% if view.items and view.items.size > 0 %}
-    {% for item in view.items %}
-      {% include oli/visual-media-render-item.html item=item index=forloop.index %}
-    {% endfor %}
-  {% else %}
-    <p class="notice--info">Local media placeholder. Final images or video will be added here.</p>
-  {% endif %}
-{% elsif view_type == "platform" %}
-  {% assign embed = view.embed %}
-  {% assign platform = view.platform | default: embed.provider | default: "platform" %}
-  {% if embed.provider == "youtube" and embed.id %}
-    {% include oli/visual-media-render-item.html item=embed index=1 %}
-  {% elsif view.embed_html %}
-    <div class="oli-platform-embed" data-oli-platform-embed="{{ platform | downcase }}">
-      {{ view.embed_html }}
-    </div>
-  {% else %}
-    <div class="oli-status-notice">
-      <strong>{{ platform | capitalize }} embed placeholder.</strong>
-      {% if view.url %}
-        <a href="{{ view.url }}" target="_blank" rel="noopener">Open the source profile or post</a>.
-      {% else %}
-        The embed target is not available yet.
-      {% endif %}
-    </div>
-  {% endif %}
-{% else %}
-  <p class="notice--warning">Unsupported visual media view type: <code>{{ view_type }}</code>.</p>
-{% endif %}
+{%- assign view = include.view -%}
+{%- if view.type == "local" -%}
+  {% for item in view.items %}
+    {% include oli/visual-media-render-item.html item=item index=forloop.index %}
+  {% endfor %}
+{%- elsif view.type == "platform" -%}
+  {% include oli/visual-media-platform-view.html view=view %}
+{%- endif -%}
