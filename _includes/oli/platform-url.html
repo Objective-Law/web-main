@@ -26,6 +26,10 @@
   {%- if variant_data -%}
     {%- if mode == "embed" -%}
       {%- assign template = variant_data.embed_url_template -%}
+    {%- elsif mode == "repost" -%}
+      {%- assign template = variant_data.repost_url_template -%}
+    {%- elsif mode == "share" -%}
+      {%- assign template = variant_data.share_url_template -%}
     {%- else -%}
       {%- assign template = variant_data.url_template -%}
     {%- endif -%}
@@ -47,7 +51,7 @@
     {%- if template_requires_urn and urn == "" -%}{%- assign can_resolve_template = false -%}{%- endif -%}
     {%- assign encoded_url = include.encoded_url | default: "" -%}
     {%- if encoded_url == "" -%}
-      {%- assign url_to_encode = include.url_to_encode | default: explicit_url | default: "" -%}
+      {%- assign url_to_encode = include.url_to_encode | default: include.share_target | default: explicit_url | default: "" -%}
       {%- if url_to_encode == "" and variant_data.url_template -%}
         {%- assign url_to_encode = variant_data.url_template
           | replace: account_placeholder, account

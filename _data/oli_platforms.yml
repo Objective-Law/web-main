@@ -35,6 +35,7 @@ x:
   variants:
     post:
       url_template: "https://x.com/{{ account }}/status/{{ id }}"
+      repost_url_template: "https://x.com/intent/retweet?tweet_id={{ id }}"
 linkedin:
   label: LinkedIn
   icon: fab fa-linkedin
@@ -42,3 +43,4 @@ linkedin:
     post:
       url_template: "https://www.linkedin.com/feed/update/{{ urn }}/"
       embed_url_template: "https://www.linkedin.com/embed/feed/update/{{ urn }}"
+      share_url_template: "https://www.linkedin.com/sharing/share-offsite/?url={{ encoded_url }}"

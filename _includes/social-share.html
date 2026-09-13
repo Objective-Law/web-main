@@ -3,6 +3,44 @@
   {% assign share_url = document.url | absolute_url %}
   {% assign share_title = document.share_title | default: document.title | default: site.title %}
   {% assign share_message = site.social_share.message | default: "Read this from Objective Law Initiative:" %}
+  {% capture twitter_href %}https://twitter.com/intent/tweet?text={{ share_message | append: ' ' | append: share_title | uri_escape }}&url={{ share_url | uri_escape }}{% if site.twitter.username %}&via={{ site.twitter.username | uri_escape }}{% endif %}{% endcapture %}
+  {% capture facebook_href %}https://www.facebook.com/sharer/sharer.php?u={{ share_url | uri_escape }}{% endcapture %}
+  {% capture linkedin_href %}https://www.linkedin.com/sharing/share-offsite/?url={{ share_url | uri_escape }}{% endcapture %}
+  {% assign twitter_label = "Share on Twitter" %}
+  {% assign facebook_label = "Share on Facebook" %}
+  {% assign linkedin_label = "Share on LinkedIn" %}
+  {% assign platform_providers = "x,facebook,linkedin" | split: "," %}
+  {% for provider_key in platform_providers %}
+    {% for platform_entry in document.views %}
+      {% assign platform_entry_type = platform_entry.type | default: "" | downcase | strip %}
+      {% if platform_entry_type != "platform" %}{% continue %}{% endif %}
+      {% capture entry_platform_key %}{% include oli/platform-key.html platform=platform_entry.platform %}{% endcapture %}
+      {% assign entry_platform_key = entry_platform_key | strip %}
+      {% if entry_platform_key != provider_key %}{% continue %}{% endif %}
+      {% capture original_platform_url %}{% include oli/platform-url.html entry=platform_entry mode="canonical" %}{% endcapture %}
+      {% assign original_platform_url = original_platform_url | strip %}
+      {% capture original_repost_url %}{% include oli/platform-url.html entry=platform_entry mode="repost" %}{% endcapture %}
+      {% assign original_repost_url = original_repost_url | strip %}
+      {% capture original_share_url %}{% include oli/platform-url.html entry=platform_entry mode="share" %}{% endcapture %}
+      {% assign original_share_url = original_share_url | strip %}
+      {% if provider_key == "x" and original_platform_url != "" and original_repost_url != "" %}
+        {% assign twitter_href = original_repost_url %}
+        {% assign twitter_label = "Repost on Twitter" %}
+      {% elsif provider_key == "facebook" and original_platform_url != "" %}
+        {% capture facebook_href %}https://www.facebook.com/sharer/sharer.php?u={{ original_platform_url | uri_escape }}{% endcapture %}
+        {% assign facebook_label = "Share Facebook post" %}
+      {% elsif provider_key == "linkedin" %}
+        {% if original_share_url != "" %}
+          {% assign linkedin_href = original_share_url %}
+          {% assign linkedin_label = "Share LinkedIn post" %}
+        {% elsif original_platform_url != "" %}
+          {% capture linkedin_href %}https://www.linkedin.com/sharing/share-offsite/?url={{ original_platform_url | uri_escape }}{% endcapture %}
+          {% assign linkedin_label = "Share LinkedIn post" %}
+        {% endif %}
+      {% endif %}
+      {% break %}
+    {% endfor %}
+  {% endfor %}
   {% assign is_hero_share = false %}
   {% if include.variant == "hero" %}
     {% assign is_hero_share = true %}
@@ -10,13 +48,13 @@
   <section class="{% if is_hero_share %}oli-page-share{% else %}oli-share{% endif %}" data-oli-share>
     {% unless is_hero_share %}<span class="oli-share__label">Share</span>{% endunless %}
     <span class="{% if is_hero_share %}oli-page-share__links{% else %}oli-share__links{% endif %}">
-      <a class="{% if is_hero_share %}oli-page-share__link{% else %}oli-share__link{% endif %}" href="https://twitter.com/intent/tweet?text={{ share_message | append: ' ' | append: share_title | uri_escape }}&url={{ share_url | uri_escape }}{% if site.twitter.username %}&via={{ site.twitter.username | uri_escape }}{% endif %}" target="_blank" rel="noopener" data-oli-share-popup aria-label="Share on Twitter" title="Share on Twitter">
+      <a class="{% if is_hero_share %}oli-page-share__link{% else %}oli-share__link{% endif %}" href="{{ twitter_href | escape_once }}" target="_blank" rel="noopener" data-oli-share-popup aria-label="{{ twitter_label }}" title="{{ twitter_label }}">
         <i class="fab fa-twitter" aria-hidden="true"></i><span{% if is_hero_share %} class="screen-reader-text"{% endif %}>Twitter</span>
       </a>
-      <a class="{% if is_hero_share %}oli-page-share__link{% else %}oli-share__link{% endif %}" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | uri_escape }}" target="_blank" rel="noopener" data-oli-share-popup aria-label="Share on Facebook" title="Share on Facebook">
+      <a class="{% if is_hero_share %}oli-page-share__link{% else %}oli-share__link{% endif %}" href="{{ facebook_href | escape_once }}" target="_blank" rel="noopener" data-oli-share-popup aria-label="{{ facebook_label }}" title="{{ facebook_label }}">
         <i class="fab fa-facebook" aria-hidden="true"></i><span{% if is_hero_share %} class="screen-reader-text"{% endif %}>Facebook</span>
       </a>
-      <a class="{% if is_hero_share %}oli-page-share__link{% else %}oli-share__link{% endif %}" href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url | uri_escape }}" target="_blank" rel="noopener" data-oli-share-popup aria-label="Share on LinkedIn" title="Share on LinkedIn">
+      <a class="{% if is_hero_share %}oli-page-share__link{% else %}oli-share__link{% endif %}" href="{{ linkedin_href | escape_once }}" target="_blank" rel="noopener" data-oli-share-popup aria-label="{{ linkedin_label }}" title="{{ linkedin_label }}">
         <i class="fab fa-linkedin" aria-hidden="true"></i><span{% if is_hero_share %} class="screen-reader-text"{% endif %}>LinkedIn</span>
       </a>
       <button class="{% if is_hero_share %}oli-page-share__button{% else %}oli-share__button{% endif %}" type="button" data-oli-native-share data-share-title="{{ share_title | escape_once }}" data-share-url="{{ share_url | escape_once }}" aria-label="Share this page" title="Share this page">
